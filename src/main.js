@@ -1,12 +1,24 @@
-import Vue from 'vue';
-import App from './App.vue';
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
+import router from './router'
+import store from './store'
+import iView from 'iview'
+import config from '@/config'
+import './index.less'
 
-import axois from './network/http.js';
+Vue.use(iView);
 
-Vue.config.productionTip = false;
+/**
+ * @description 全局注册应用配置
+*/
+Vue.prototype.$config = config;
 
-axois.get("/api/hello/?name=hao");
-
+/* eslint-disable no-new */
 new Vue({
-  render: h => h(App),
-}).$mount('#app');
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
+});
