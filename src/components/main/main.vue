@@ -4,7 +4,8 @@
             <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
                 <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
                 <div class="logo-con">
-                    测试
+                    <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
+                    <img v-show="collapsed" :src="minLogo" key="min-logo" />
                 </div>
             </side-menu>
         </Sider>
@@ -12,8 +13,6 @@
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
                     <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
-                    <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
-                    <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
                     <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
                 </header-bar>
             </Header>
@@ -40,10 +39,10 @@
     import User from './components/user'
     import ABackTop from './components/a-back-top'
     import Fullscreen from './components/fullscreen'
-    import Language from './components/language'
-    import ErrorStore from './components/error-store'
-    import { mapMutations, mapActions, mapGetters } from 'vuex'
+    import { mapMutations, mapActions } from 'vuex'
     import { getNewTagList, routeEqual } from '@/libs/util'
+    import minLogo from '@/assets/images/logo-min.jpg'
+    import maxLogo from '@/assets/images/logo.jpg'
     import routers from '@/router/routers'
     import './main.less'
     export default {
@@ -51,31 +50,25 @@
         components: {
             SideMenu,
             HeaderBar,
-            Language,
             TagsNav,
             Fullscreen,
-            ErrorStore,
             User,
             ABackTop
         },
         data () {
             return {
                 collapsed: false,
-                isFullscreen: false
+                isFullscreen: false,
+                minLogo,
+                maxLogo
             }
         },
         computed: {
-            ...mapGetters([
-                'errorCount'
-            ]),
             tagNavList () {
                 return this.$store.state.app.tagNavList
             },
-            tagRouter () {
-                return this.$store.state.app.tagRouter
-            },
             userAvatar () {
-                return this.$store.state.user.avatarImgPath
+                return "";
             },
             cacheList () {
                 const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
@@ -86,9 +79,6 @@
             },
             local () {
                 return this.$store.state.app.local
-            },
-            hasReadErrorPage () {
-                return this.$store.state.app.hasReadErrorPage
             },
             unreadCount () {
                 return this.$store.state.user.unreadCount
@@ -108,16 +98,16 @@
                 'getUnreadMessageCount'
             ]),
             turnToPage (route) {
-                let { name, params, query } = {}
-                if (typeof route === 'string') name = route
+                let { name, params, query } = {};
+                if (typeof route === 'string') name = route;
                 else {
-                    name = route.name
-                    params = route.params
-                    query = route.query
+                    name = route.name;
+                    params = route.params;
+                    query = route.query;
                 }
                 if (name.indexOf('isTurnByHref_') > -1) {
-                    window.open(name.split('_')[1])
-                    return
+                    window.open(name.split('_')[1]);
+                    return;
                 }
                 this.$router.push({
                     name,
@@ -126,7 +116,7 @@
                 })
             },
             handleCollapsedChange (state) {
-                this.collapsed = state
+                this.collapsed = state;
             },
             handleCloseTag (res, type, route) {
                 if (type !== 'others') {
@@ -146,35 +136,33 @@
         },
         watch: {
             '$route' (newRoute) {
-                const { name, query, params, meta } = newRoute
+                const { name, query, params, meta } = newRoute;
                 this.addTag({
                     route: { name, query, params, meta },
                     type: 'push'
-                })
-                this.setBreadCrumb(newRoute)
-                this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
-                this.$refs.sideMenu.updateOpenName(newRoute.name)
+                });
+                this.setBreadCrumb(newRoute);
+                this.setTagNavList(getNewTagList(this.tagNavList, newRoute));
+                this.$refs.sideMenu.updateOpenName(newRoute.name);
             }
         },
         mounted () {
             /**
              * @description 初始化设置面包屑导航和标签导航
              */
-            this.setTagNavList()
-            this.setHomeRoute(routers)
-            const { name, params, query, meta } = this.$route
+            //this.setTagNavList()
+            this.setHomeRoute(routers);
+            const { name, params, query, meta } = this.$route;
             this.addTag({
                 route: { name, params, query, meta }
-            })
-            this.setBreadCrumb(this.$route)
+            });
+            this.setBreadCrumb(this.$route);
             // 如果当前打开页面不在标签栏中，跳到homeName页
             if (!this.tagNavList.find(item => item.name === this.$route.name)) {
                 this.$router.push({
                     name: this.$config.homeName
-                })
+                });
             }
-            // 获取未读消息条数
-            this.getUnreadMessageCount()
         }
     }
 </script>

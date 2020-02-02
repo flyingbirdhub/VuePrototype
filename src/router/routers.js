@@ -1,4 +1,4 @@
-//import Main from '@/components/main';
+import Main from '@/components/main';
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -17,11 +17,63 @@
  */
 
 export default [{
-    path: '/login',
-    name: 'login',
+    path: '/',
+    redirect: '/home',
+    name: '_home',
     meta: {
-        title: 'Login - 登录',
+        title: "首页",
         hideInMenu: true
     },
-    component: () => import('@/views/login/login.vue')
+    component: Main,
+    children: [
+        {
+            path: '/home',
+            name: 'home',
+            meta: {
+                title: "首页",
+                icon: 'md-home',
+                hideInMenu: true
+            },
+            component: () => import('@/views/login/login.vue')
+        },
+        {
+            path: 'login',
+            name: 'login',
+            meta: {
+                title: "登录",
+                icon: 'md-home',
+                hideInMenu: true
+            },
+            component: () => import('@/views/login/login.vue')
+        }
+    ]
+}, {
+    path: '/test',
+    name: 'test',
+    meta: {
+        title: '测试',
+        hideInBread: true,
+        icon: 'md-home'
+    },
+    component: Main,
+    children: [
+        {
+            path: 'temp1',
+            name: 'temp1',
+            meta: {
+                title: "测试1",
+                icon: 'md-home'
+            },
+            component: () => import('@/views/login/login.vue')
+        },
+        {
+            path: 'temp2',
+            name: 'temp2',
+            meta: {
+                title: "测试2",
+                icon: 'md-home'
+            },
+            component: () => import('@/views/login/login.vue')
+        }
+    ]
 }]
