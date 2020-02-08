@@ -1,10 +1,20 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const resolve = dir => {
     return path.join(__dirname, dir)
 };
 
 module.exports = {
+    configureWebpack: {
+        plugins: [
+            new webpack.ProvidePlugin({
+                $:"jquery",
+                jQuery:"jquery",
+                "windows.jQuery":"jquery"
+            })
+        ]
+    },
     chainWebpack: config => {
         config.resolve.alias
             .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))

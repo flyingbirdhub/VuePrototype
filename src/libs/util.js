@@ -395,3 +395,39 @@ export const setTitle = (routeItem, vm) => {
     const resTitle = pageTitle ? `${title} - ${pageTitle}` : title;
     window.document.title = resTitle
 };
+
+export const removeSessionFromUrl = () => {
+    let href = window.location.href;
+    let paramString = href.split("?");
+    if(paramString.length < 2){
+        return;
+    }
+    let paramStr = paramString[1];
+    let params = paramStr.split("&");
+    let result = "";
+    let _existed = false;
+    for(let param of params){
+        let item = param.split("=");
+        if(item[0] === "SESSION"){
+            _existed = true;
+            continue;
+        }
+        if(result.length > 0){
+            result += "&";
+        }
+        if(item.length > 1){
+            result += item[0]+"="+item[1];
+        }
+        else {
+            result += item[0]
+        }
+    }
+    if(_existed){
+        if(result.length > 0){
+            window.location.href = paramString[0]+"?"+result;
+        }
+        else {
+            window.location.href = paramString[0];
+        }
+    }
+};

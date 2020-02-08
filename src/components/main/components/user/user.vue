@@ -2,7 +2,7 @@
     <div class="user-avatar-dropdown">
         <Dropdown @on-click="handleClick">
             <Badge :dot="!!messageUnreadCount">
-                <Avatar :src="userAvatar"/>
+                <VueAvatar :username="userName" :inline="true" :size="28"></VueAvatar>
             </Badge>
             <Icon :size="18" type="md-arrow-dropdown"></Icon>
             <DropdownMenu slot="list">
@@ -18,16 +18,19 @@
 <script>
     import './user.less'
     import { mapActions } from 'vuex'
+    import VueAvatar from 'vue-avatar';
     export default {
         name: 'User',
+        components: {VueAvatar},
         props: {
-            userAvatar: {
-                type: String,
-                default: ''
-            },
             messageUnreadCount: {
                 type: Number,
                 default: 0
+            }
+        },
+        computed: {
+            userName(){
+                return this.$store.state.user.userName;
             }
         },
         methods: {

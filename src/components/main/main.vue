@@ -12,7 +12,7 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-                    <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
+                    <user :message-unread-count="unreadCount" />
                     <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
                 </header-bar>
             </Header>
@@ -66,9 +66,6 @@
         computed: {
             tagNavList () {
                 return this.$store.state.app.tagNavList
-            },
-            userAvatar () {
-                return "";
             },
             cacheList () {
                 const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]

@@ -34,17 +34,7 @@ export default [{
                 icon: 'md-home',
                 hideInMenu: true
             },
-            component: () => import('@/views/login/login.vue')
-        },
-        {
-            path: 'login',
-            name: 'login',
-            meta: {
-                title: "登录",
-                icon: 'md-home',
-                hideInMenu: true
-            },
-            component: () => import('@/views/login/login.vue')
+            component: () => import('@/views/main/main.vue')
         }
     ]
 }, {
@@ -64,7 +54,7 @@ export default [{
                 title: "测试1",
                 icon: 'md-home'
             },
-            component: () => import('@/views/login/login.vue')
+            component: () => import('@/views/main/main.vue')
         },
         {
             path: 'temp2',
@@ -73,7 +63,7 @@ export default [{
                 title: "测试2",
                 icon: 'md-home'
             },
-            component: () => import('@/views/login/login.vue')
+            component: () => import('@/views/main/main.vue')
         }
     ]
 }]
