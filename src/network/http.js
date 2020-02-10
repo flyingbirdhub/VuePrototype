@@ -31,9 +31,9 @@ axois.interceptors.response.use(response => {
     }
     return response;
 }, error => {
-    alert(error + JSON.stringify(error.config));
+    //alert(error + JSON.stringify(error.config));
     if(error.response.status === 303){
-        window.location.href = error.response.data.redirect;
+        //window.location.href = error.response.data.redirect;
         return;
     }
     return Promise.reject(error);
